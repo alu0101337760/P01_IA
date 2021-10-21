@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -290,7 +290,7 @@ MonoBehaviour:
   obstacles: []
   maxX: 0
   maxZ: 0
-  probability: 0
+  obstaclePercentage: 0
 --- !u!4 &39363607
 Transform:
   m_ObjectHideFlags: 0
@@ -745,7 +745,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6976037935939184454, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_Name
-      value: Interface (1)
+      value: Interface
       objectReference: {fileID: 0}
     - target: {fileID: 7321221861012575490, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_RootOrder
@@ -1009,7 +1009,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3705658602223737823, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
       propertyPath: m_Name
-      value: Terrrain
+      value: Terrain
       objectReference: {fileID: 0}
     - target: {fileID: 6879123833813337450, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
       propertyPath: m_RootOrder
