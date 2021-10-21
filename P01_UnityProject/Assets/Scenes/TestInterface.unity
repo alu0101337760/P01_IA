@@ -267,8 +267,9 @@ GameObject:
   m_Component:
   - component: {fileID: 39363607}
   - component: {fileID: 39363606}
+  - component: {fileID: 39363608}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f9631aac4b0844faa7a47ed5da3e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 0}
+  obstacle: {fileID: 2037246547323680961, guid: bc73071739e3de745bbdaa4cc2236ff5, type: 3}
   obstacles: []
   maxX: 0
   maxZ: 0
@@ -305,6 +306,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &39363608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39363605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8d7202809a0134895b6672277fa81d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddObstacles: 1
 --- !u!1 &49659333
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +757,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1090897418670376586, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 39363608}
+    - target: {fileID: 2810149544619363263, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 39363606}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 39363606}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMaxZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: IA_sim.ObstacleManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6976037935939184454, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_Name
       value: Interface
@@ -791,6 +841,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7373162163189443247, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 39363608}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
 --- !u!1 &648000849
@@ -1287,11 +1341,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c352209ef5be4542bbee8f2a40ac616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AccelerationMod: 0
-  sensitivity: 0
-  DecelerationMod: 0
+  AccelerationMod: 0.02
+  sensitivity: 1
+  DecelerationMod: 0.02
   MaxXAngle: 60
-  maximumMovementSpeed: 1
+  maximumMovementSpeed: 0.01
 --- !u!1 &969768826
 GameObject:
   m_ObjectHideFlags: 0
