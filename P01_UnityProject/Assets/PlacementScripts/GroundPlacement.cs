@@ -30,7 +30,7 @@ namespace IA_sim
             walls[2].transform.localScale = new Vector3(walls[2].transform.localScale.x * x + 3, walls[2].transform.localScale.y, walls[2].transform.localScale.z);
 
             walls[3].transform.position = gameObject.transform.position + new Vector3(0f, 0f, -z / 2f - 1f);
-            walls[3].transform.localScale = new Vector3(walls[3].transform.localScale.x * x +3, walls[3].transform.localScale.y, walls[3].transform.localScale.z);
+            walls[3].transform.localScale = new Vector3(walls[3].transform.localScale.x * x + 3, walls[3].transform.localScale.y, walls[3].transform.localScale.z);
         }
 
         private void CalculateGroundPlacement()
@@ -52,9 +52,12 @@ namespace IA_sim
         {
             if (ObstacleManager.instance != null)
             {
-                CalculateGroundPlacement();
-                CalculateWallsSize();
-                Destroy(this);
+                if (ObstacleManager.instance.maxX != 0 && ObstacleManager.instance.maxZ != 0)
+                {
+                    CalculateGroundPlacement();
+                    CalculateWallsSize();
+                    Destroy(this);
+                }
             }
         }
     }

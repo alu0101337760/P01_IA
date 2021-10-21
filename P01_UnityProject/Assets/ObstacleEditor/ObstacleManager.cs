@@ -37,11 +37,17 @@ namespace IA_sim
 
         public void SetMaxX(string str)
         {
-            maxX = int.Parse(str);
+            if (maxX == 0)
+            {
+                maxX = int.Parse(str);
+            }
         }
         public void SetMaxZ(string str)
         {
-            maxZ = int.Parse(str);
+            if (maxZ == 0)
+            {
+                maxZ = int.Parse(str);
+            }
         }
         public void InstantiateObstacle(Vector3 pos)
         {
@@ -76,7 +82,7 @@ namespace IA_sim
                 InstantiateObstacle(freeLocations[index]);
                 freeLocations.RemoveAt(index);
                 obstacleSum++;
-            }           
+            }
         }
 
 

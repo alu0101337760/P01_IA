@@ -7,11 +7,17 @@ namespace IA_sim
     public class EditWithMouse : MonoBehaviour
     {
 
-        void Start()
-        {
+        public bool AddObstacles = true;
 
+        public void AddObstaclesIsTrue()
+        {
+            AddObstacles = true;
         }
 
+        public void AddObstaclesIsFalse()
+        {
+            AddObstacles = false;
+        }
 
         private bool CheckIfPositionIsValid(Vector3[] positions, Vector3 candidate)
         {
@@ -62,7 +68,7 @@ namespace IA_sim
 
         private void DeleteWithMouse()
         {
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetKey(KeyCode.Mouse0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -81,7 +87,10 @@ namespace IA_sim
 
         void Update()
         {
-            InstantiateWithMouse();
+            if (AddObstacles)
+            {
+                InstantiateWithMouse();
+            }
             DeleteWithMouse();
         }
     }
