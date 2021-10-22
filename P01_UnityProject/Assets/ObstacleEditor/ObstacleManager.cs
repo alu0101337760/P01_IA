@@ -32,11 +32,13 @@ namespace IA_sim
 
         public void SetObstaclePercentage(int p)
         {
+            Debug.Log(p);
             obstaclePercentage = p;
         }
 
         public void SetMaxX(string str)
         {
+            Debug.Log(str);
             if (maxX == 0)
             {
                 maxX = int.Parse(str);
@@ -44,6 +46,7 @@ namespace IA_sim
         }
         public void SetMaxZ(string str)
         {
+            Debug.Log(str);
             if (maxZ == 0)
             {
                 maxZ = int.Parse(str);
