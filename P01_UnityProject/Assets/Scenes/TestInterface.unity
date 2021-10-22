@@ -291,7 +291,7 @@ MonoBehaviour:
   obstacles: []
   maxX: 0
   maxZ: 0
-  obstaclePercentage: 0
+  obstaclePercentage: 100
 --- !u!4 &39363607
 Transform:
   m_ObjectHideFlags: 0
@@ -780,6 +780,10 @@ PrefabInstance:
     - target: {fileID: 3025731979077933706, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981913467814216806, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_MaxValue
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 4981913467814216806, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
