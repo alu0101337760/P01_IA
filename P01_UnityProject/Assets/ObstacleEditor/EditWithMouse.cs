@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace IA_sim
@@ -91,7 +90,10 @@ namespace IA_sim
             {
                 InstantiateWithMouse();
             }
-            DeleteWithMouse();
+            else
+            {
+                DeleteWithMouse();
+            }
         }
     }
 }

@@ -62,16 +62,27 @@ namespace IA_sim
             }
         }
 
+        private void DestroyAllObstacles()
+        {
+            for (int i = 0; i < obstacles.Count; i++)
+            {
+                GameObject toDelete = obstacles[i];               
+                Destroy(toDelete);
+            }
+            obstacles.Clear();
+        }
+
         public void RandomSpawn()
         {
+            DestroyAllObstacles();
             List<Vector3> freeLocations = new List<Vector3>();
             int numberOfObstacles = CalculateNumberOfObstacles();
             int obstacleSum = 0;
 
             // we build a list with all the posible locations 
-            for (int i = 0; i < maxX; i++)
+            for (int i = 0; i <= maxX; i++)
             {
-                for (int j = 0; j < maxZ; j++)
+                for (int j = 0; j <= maxZ; j++)
                 {
                     freeLocations.Add(new Vector3(i, 0, j));
                 }
