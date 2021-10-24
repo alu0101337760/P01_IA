@@ -4,15 +4,20 @@ using UnityEngine;
 
 namespace IA_sim
 {
-    public class ObstacleManager : MonoBehaviour
+    public class PlacementManager : MonoBehaviour
     {
         public GameObject obstacle;
+        public GameObject taxi;
+        public GameObject finalLocation;
+
+        public GameObject[] locations;
         public List<GameObject> obstacles;
+
         public int maxX;
         public int maxZ;
         public int obstaclePercentage;
 
-        public static ObstacleManager instance;
+        public static PlacementManager instance;
 
         // Start is called before the first frame update
         void Start()
@@ -27,6 +32,7 @@ namespace IA_sim
         private void build()
         {
             instance = this;
+            locations = new GameObject[2];
             obstacles = new List<GameObject>();
         }
 
@@ -54,19 +60,43 @@ namespace IA_sim
         }
         public void InstantiateObstacle(Vector3 pos)
         {
-            if (pos.x <= maxX && pos.z <= maxZ)
-            {
-                obstacles.Add(Instantiate(obstacle));
-                Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
-                obstacleTransform.position = pos;
-            }
+
+            obstacles.Add(Instantiate(obstacle));
+            Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
+            obstacleTransform.position = pos;
+
         }
+
+        public void InstantiateInitialLocation(Vector3 pos)
+        {
+            if (locations[0] != null)
+            {                
+                Destroy(locations[0]);
+            }
+
+            locations[0] = Instantiate(taxi);
+            Transform transform = locations[0].transform;
+            transform.position = pos;
+
+        }
+
+        public void InstantiateFinalLocation(Vector3 pos)
+        {
+            if (locations[1] != null)
+            {
+                Destroy(locations[1]);
+            }
+            locations[1] = Instantiate(finalLocation);
+            Transform transform = locations[1].transform;
+            transform.position = pos;
+        }
+
 
         private void DestroyAllObstacles()
         {
             for (int i = 0; i < obstacles.Count; i++)
             {
-                GameObject toDelete = obstacles[i];               
+                GameObject toDelete = obstacles[i];
                 Destroy(toDelete);
             }
             obstacles.Clear();
@@ -99,28 +129,12 @@ namespace IA_sim
             }
         }
 
-
         private int CalculateNumberOfObstacles()
         {
             int matrixsize = maxX * maxZ;
             return (int)((matrixsize * obstaclePercentage) / 100);
         }
 
-        bool SpawnObstacleWithProbability(Vector3 pos)
-        {
-            int chance = (int)Random.Range(0, 101);
-
-            if (chance < obstaclePercentage)
-            {
-                obstacles.Add(Instantiate(obstacle));
-
-                Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
-                obstacleTransform.position = pos;
-                return true;
-
-            }
-            return false;
-        }
 
         public Vector3[] GetObstaclePositions()
         {
@@ -131,11 +145,6 @@ namespace IA_sim
                 output[i] = obstacles[i].transform.position;
             }
             return output;
-        }
-
-        void Update()
-        {
-
         }
     }
 }

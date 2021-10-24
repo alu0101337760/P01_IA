@@ -17,8 +17,8 @@ namespace IA_sim
 
         private void CalculateWallsSize()
         {
-            float x = ObstacleManager.instance.maxX;
-            float z = ObstacleManager.instance.maxZ;
+            float x = PlacementManager.instance.maxX;
+            float z = PlacementManager.instance.maxZ;
 
             walls[0].transform.position = gameObject.transform.position + new Vector3(x / 2f + 1f, 0f, 0f);
             walls[0].transform.localScale = new Vector3(walls[0].transform.localScale.x, walls[0].transform.localScale.y, walls[0].transform.localScale.z * z + 3);
@@ -35,8 +35,8 @@ namespace IA_sim
 
         private void CalculateGroundPlacement()
         {
-            int x = ObstacleManager.instance.maxX;
-            int z = ObstacleManager.instance.maxZ;
+            int x = PlacementManager.instance.maxX;
+            int z = PlacementManager.instance.maxZ;
             Vector3 scale = gameObject.transform.localScale;
 
             scale.x *= x + 1;
@@ -50,9 +50,9 @@ namespace IA_sim
 
         void Update()
         {
-            if (ObstacleManager.instance != null)
+            if (PlacementManager.instance != null)
             {
-                if (ObstacleManager.instance.maxX != 0 && ObstacleManager.instance.maxZ != 0)
+                if (PlacementManager.instance.maxX != 0 && PlacementManager.instance.maxZ != 0)
                 {
                     CalculateGroundPlacement();
                     CalculateWallsSize();
