@@ -73,7 +73,7 @@ namespace IA_sim
             {                
                 Destroy(locations[0]);
             }
-
+            pos = new Vector3(pos.x, 0.2f, pos.z);
             locations[0] = Instantiate(taxi);
             Transform transform = locations[0].transform;
             transform.position = pos;
@@ -135,6 +135,14 @@ namespace IA_sim
             return (int)((matrixsize * obstaclePercentage) / 100);
         }
 
+        public Vector3[] GetLocations() { 
+            Vector3[] output = new Vector3[2];
+
+            output[0] = locations[0].transform.position;
+            output[1] = locations[1].transform.position;
+
+            return output;
+        }
 
         public Vector3[] GetObstaclePositions()
         {

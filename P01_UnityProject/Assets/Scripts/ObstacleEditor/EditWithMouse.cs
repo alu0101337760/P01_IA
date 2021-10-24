@@ -9,7 +9,7 @@ namespace IA_sim
         public bool AddObstacles = true;
         public bool SelectingInitialLocation = false;
         public bool SelectingFinalLocation = false;
-                
+
 
         public void AddObstaclesIsTrue()
         {
@@ -45,6 +45,7 @@ namespace IA_sim
         public void SelectInitialLocation()
         {
             SelectingInitialLocation = true;
+            AddObstacles = false;
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 Vector3[] forbiddenPositions = PlacementManager.instance.GetObstaclePositions();
@@ -61,16 +62,17 @@ namespace IA_sim
                 if (CheckIfPositionIsValid(forbiddenPositions, clickPosition) && CheckIfColliderIsValid(hit.collider))
                 {
                     PlacementManager.instance.InstantiateInitialLocation(clickPosition);
+                    SelectingInitialLocation = false;
+                    
                 }
-                SelectingInitialLocation = false;
             }
         }
         public void SelectFinalLocation()
         {
             SelectingFinalLocation = true;
+            AddObstacles = false;
             if (Input.GetKey(KeyCode.Mouse0))
             {
-
                 Vector3[] forbiddenPositions = PlacementManager.instance.GetObstaclePositions();
                 Vector3 clickPosition = new Vector3();
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -85,8 +87,8 @@ namespace IA_sim
                 if (CheckIfPositionIsValid(forbiddenPositions, clickPosition) && CheckIfColliderIsValid(hit.collider))
                 {
                     PlacementManager.instance.InstantiateFinalLocation(clickPosition);
+                    SelectingFinalLocation = false;
                 }
-                SelectingFinalLocation = false;
             }
         }
         private void InstantiateWithMouse()
@@ -135,13 +137,12 @@ namespace IA_sim
             if (SelectingInitialLocation)
             {
                 SelectInitialLocation();
-               
             }
             else if (SelectingFinalLocation)
             {
                 SelectFinalLocation();
             }
-            else
+            else 
             {
                 if (AddObstacles)
                 {
