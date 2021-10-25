@@ -11,6 +11,8 @@ namespace IA_sim
         int[] target;
         List<int[]> forbiddenPositions;
 
+        public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 }, };
+
         private class Node
         {
             public Node(Node parent, int[] pos, float g, float h)
@@ -33,14 +35,6 @@ namespace IA_sim
             initialPosition = initial;
             target = last;
             this.forbiddenPositions = forbiddenPositions;
-        }
-
-        int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 }, };
-
-
-        private void InsertInList()
-        {
-
         }
 
         private void OrderedInsert(List<Node> nodeList, Node node)

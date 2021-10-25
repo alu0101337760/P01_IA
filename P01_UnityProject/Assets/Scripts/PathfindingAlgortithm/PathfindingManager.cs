@@ -6,9 +6,11 @@ namespace IA_sim
 {
     public class PathfindingManager : MonoBehaviour
     {
-        public GameObject exploredNode;
+        public GameObject yellowPlane;
+        public GameObject GreenPlane;
         public List<int[]> exploredPositions;
         public static PathfindingManager instance;
+        List<int[]> forbiddenPos;
 
         public Slider slider;
 
@@ -66,12 +68,34 @@ namespace IA_sim
         public void DrawExploredNodes(int threshold)
         {
             CleanGameObjectList(this.instancedExploredMarks);
+            int[][] operations = pathfinder.operations;
+
+            //we draw the explored nodes
             if (exploredPositions.Count != 0)
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    this.instancedExploredMarks.Add(Instantiate(exploredNode));
-                    this.instancedExploredMarks[i].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+                    this.instancedExploredMarks.Add(Instantiate(yellowPlane));
+                    this.instancedExploredMarks[this.instancedExploredMarks.Count-1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+
+                    //draw the candidates, applying the operators to all of the 
+                    //explored nodes and making sure the positions are not occupied already
+                    for (int j = 0; j < operations.Length; j++)
+                    {
+                        int[] candidatePos = new int[2] { exploredPositions[i][0] + operations[j][0], exploredPositions[i][1] + operations[j][1] };
+
+                        if (this.instancedExploredMarks.Exists(x => x.transform.position == new Vector3(candidatePos[0], 0.1f, candidatePos[1])) ||
+                                                                                                       forbiddenPos.Exists(x => x == candidatePos))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            this.instancedExploredMarks.Add(Instantiate(GreenPlane));
+                            this.instancedExploredMarks[this.instancedExploredMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.1f, candidatePos[1]);
+                        }
+
+                    }
                 }
             }
         }
@@ -87,7 +111,7 @@ namespace IA_sim
                 int[] final = TranslatePositions(PlacementManager.instance.locations[1].transform.position);
 
                 Vector3[] obstaclePositions = PlacementManager.instance.GetObstaclePositions();
-                List<int[]> forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
+                forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
                 pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
                 if (pathfinder.simulate())

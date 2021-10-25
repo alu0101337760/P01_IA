@@ -203,7 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55750141118b9874b88098faa6a4c464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exploredNode: {fileID: 7150458405857071795, guid: 7dedf3a310442a3448531f059a5c1866, type: 3}
+  yellowPlane: {fileID: 7150458405857071795, guid: 7dedf3a310442a3448531f059a5c1866, type: 3}
+  GreenPlane: {fileID: 8556462123668606430, guid: 4dab4963586606645910ca2d61154f02, type: 3}
   slider: {fileID: 1084219553}
 --- !u!1 &324022078 stripped
 GameObject:
