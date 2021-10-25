@@ -7,7 +7,8 @@ namespace IA_sim
     public class GroundPlacement : MonoBehaviour
     {
         public List<GameObject> walls;
-
+        public GameObject tile;
+        public List<GameObject> tiles;
         public float wallsHeight;
 
         void Start()
@@ -37,14 +38,25 @@ namespace IA_sim
         {
             int x = PlacementManager.instance.maxX;
             int z = PlacementManager.instance.maxZ;
-            Vector3 scale = gameObject.transform.localScale;
 
-            scale.x *= x + 1;
-            scale.z *= z + 1;
+            for (int i= 0; i<= x; i++)
+            {
+                for (int j = 0; j<= z; j++)
+                {
+                    tiles.Add(Instantiate(tile));
+                    tiles[tiles.Count - 1].transform.position = new Vector3(i, 0f, j);
+                    tiles[tiles.Count - 1].transform.parent = this.transform;
+                }
+            }
 
-            gameObject.transform.localScale = scale;
+        //    Vector3 scale = gameObject.transform.localScale;
 
-            gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
+        //    scale.x *= x + 1;
+        //    scale.z *= z + 1;
+
+        //    gameObject.transform.localScale = scale;
+
+        //    gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
         }
 
 

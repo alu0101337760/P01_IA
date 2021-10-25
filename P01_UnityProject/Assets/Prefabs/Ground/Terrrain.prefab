@@ -201,6 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6879123833813337450}
+  - component: {fileID: 3993387857830006655}
   m_Layer: 0
   m_Name: Terrrain
   m_TagString: Untagged
@@ -227,6 +228,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3993387857830006655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3705658602223737823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b1910b68b7bfb47a644857838fc3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walls:
+  - {fileID: 199769960777433230}
+  - {fileID: 4334177764821571553}
+  - {fileID: 8514084478197947600}
+  - {fileID: 282538424009404563}
+  tile: {fileID: 1461868625284303155}
+  tiles: []
+  wallsHeight: 0
 --- !u!1 &4334177764821571553
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,8 +519,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7250513694905015986, guid: c87891368f0e502438c3b5b10b0e17b3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c87891368f0e502438c3b5b10b0e17b3, type: 3}
+--- !u!1 &1461868625284303155 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7250513694905015985, guid: c87891368f0e502438c3b5b10b0e17b3, type: 3}
+  m_PrefabInstance: {fileID: 8131079865000990594}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1461868625284303156 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7250513694905015990, guid: c87891368f0e502438c3b5b10b0e17b3, type: 3}
