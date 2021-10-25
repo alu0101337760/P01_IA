@@ -151,9 +151,6 @@ namespace IA_sim
                 if (currentNode.H == 0)
                 {
                     ///// FOUND A SOLUTION /////
-
-                    PathfindingManager.instance.DrawExploredNodes(GetExploredPositions());
-
                     return true;
                 }
 

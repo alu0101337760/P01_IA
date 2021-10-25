@@ -203,8 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55750141118b9874b88098faa6a4c464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exploredNode: {fileID: 0}
-  exploredNodes: []
+  exploredNode: {fileID: 7150458405857071795, guid: 7dedf3a310442a3448531f059a5c1866, type: 3}
+  exploredPositions: []
 --- !u!1 &324022078 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3954695932849734841, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}

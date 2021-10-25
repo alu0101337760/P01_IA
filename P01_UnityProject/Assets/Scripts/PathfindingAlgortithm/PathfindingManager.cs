@@ -1,40 +1,46 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace IA_sim
 {
     public class PathfindingManager : MonoBehaviour
     {
         public GameObject exploredNode;
-        private Astar pathfinder;
-                       
-        public List<GameObject> exploredPositions;
-
+        public List<int[]> exploredPositions;
         public static PathfindingManager instance;
+
+        public Slider slider;
+
+        private Astar pathfinder;
+        private List<GameObject> instancedExploredMarks;
 
         private void Start()
         {
             if (instance == null)
             {
                 instance = this;
+                instancedExploredMarks = new List<GameObject>();
             }
         }
-             
+
         private void CleanGameObjectList(List<GameObject> list)
         {
-            for (int i= 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 GameObject target = list[i];
                 Destroy(target);
-                
+
             }
             list.Clear();
         }
+
+
         private int[] TranslatePositions(Vector3 pos)
         {
             return new int[2] { (int)pos.x, (int)pos.z };
-        }    
+        }
+
 
         private List<int[]> TranslateForbiddenPositions(Vector3[] forbiddenPositions)
         {
@@ -46,6 +52,7 @@ namespace IA_sim
             return output;
         }
 
+
         private bool CheckConditions()
         {
             return
@@ -55,15 +62,20 @@ namespace IA_sim
                 PlacementManager.instance.locations[1] != null;
         }
 
-        public void DrawExploredNodes(List<int[]> exploredPositions)
+
+        public void DrawExploredNodes(int threshold)
         {
-            CleanGameObjectList(this.exploredPositions);
-            for (int i = 0; i < exploredPositions.Count; i++)
+            CleanGameObjectList(this.instancedExploredMarks);
+            if (exploredPositions.Count != 0)
             {
-                this.exploredPositions.Add(Instantiate(exploredNode));
-                this.exploredPositions[i].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+                for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
+                {
+                    this.instancedExploredMarks.Add(Instantiate(exploredNode));
+                    this.instancedExploredMarks[i].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+                }
             }
         }
+
 
         public void Simulate()
         {
@@ -85,7 +97,10 @@ namespace IA_sim
                 else
                 {
                     Debug.Log("didn't finda path");
-                }                
+                }
+                this.exploredPositions = pathfinder.GetExploredPositions();
+                slider.gameObject.GetComponent<SliderScript>().SetMaxValue(this.exploredPositions.Count);
+
             }
         }
     }
