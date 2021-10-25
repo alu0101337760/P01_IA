@@ -76,7 +76,7 @@ namespace IA_sim
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
                     this.instancedExploredMarks.Add(Instantiate(yellowPlane));
-                    this.instancedExploredMarks[this.instancedExploredMarks.Count-1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+                    this.instancedExploredMarks[this.instancedExploredMarks.Count - 1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
 
                     //draw the candidates, applying the operators to all of the 
                     //explored nodes and making sure the positions are not occupied already
@@ -84,8 +84,8 @@ namespace IA_sim
                     {
                         int[] candidatePos = new int[2] { exploredPositions[i][0] + operations[j][0], exploredPositions[i][1] + operations[j][1] };
 
-                        if (this.instancedExploredMarks.Exists(x => x.transform.position == new Vector3(candidatePos[0], 0.1f, candidatePos[1])) ||
-                                                                                                       forbiddenPos.Exists(x => x == candidatePos))
+                        if (this.instancedExploredMarks.Exists(instancedMark => instancedMark.transform.position == new Vector3(candidatePos[0], 0.1f, candidatePos[1])) ||
+                                                                      forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]))
                         {
                             continue;
                         }

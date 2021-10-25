@@ -72,16 +72,9 @@ namespace IA_sim
             }
         }
 
-        private int CheckIfPositionIsInList(List<Node> nodeList, int[] candidatePos)
+        private bool CheckIfPositionIsInList(List<Node> nodeList, int[] candidatePos)
         {
-            for (int i = nodeList.Count - 1; i >= 0; i--)
-            {
-                if (nodeList[i].position == candidatePos)
-                {
-                    return i;
-                }
-            }
-            return -1;
+            return nodeList.Exists(node => node.position[0] == candidatePos[0] && node.position[1] == candidatePos[1]);
         }
 
         private bool CheckIfPositionIsOutOfBounds(int[] candidatePos)
@@ -95,30 +88,14 @@ namespace IA_sim
 
         private bool CheckIfPostionIsForbidden(int[] candidatePos)
         {
-
-            for (int i = 0; i < forbiddenPositions.Count; i++)
-            {
-                if (forbiddenPositions[i][0] == candidatePos[0] && forbiddenPositions[i][1] == candidatePos[1])
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return forbiddenPositions.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
         }
 
-        private bool CheckIfPositionIsValid(int[] candidatePos, List<Node> closedList)
+        private bool CheckIfPositionIsInvalid(int[] candidatePos, List<Node> closedList)
         {
-            if (CheckIfPositionIsInList(closedList, candidatePos) >= 0)
-                return false;
-
-            if (CheckIfPositionIsOutOfBounds(candidatePos))
-                return false;
-
-            if (CheckIfPostionIsForbidden(candidatePos))
-                return false;
-
-            return true;
+            return CheckIfPositionIsInList(closedList, candidatePos) ||
+            CheckIfPositionIsOutOfBounds(candidatePos) ||
+            CheckIfPostionIsForbidden(candidatePos);
         }
 
         private int CalculateManhattan(int[] currentPos)
@@ -135,7 +112,7 @@ namespace IA_sim
 
             openList.Add(new Node(null, initialPosition, 0, CalculateManhattan(initialPosition)));
 
-            while (openList.Count != 0 && closedList.Count < 1000)
+            while (openList.Count != 0 && closedList.Count < 300)
             {
                 //we add the node with the least F value to the closed node list
                 currentNode = openList[0];
@@ -155,7 +132,7 @@ namespace IA_sim
                     float childG = currentNode.G + 1;
 
                     //If the position is invalid, continue
-                    if (!CheckIfPositionIsValid(childPosition, closedList))
+                    if (CheckIfPositionIsInvalid(childPosition, closedList))
                     {
                         continue;
                     }
@@ -166,6 +143,16 @@ namespace IA_sim
             }
 
             return false;
+        }
+
+        public List<int[]> DebugGetOpenPositions()
+        {
+            List<int[]> output = new List<int[]>();
+            for (int i = 0; i < openList.Count; i++)
+            {
+                output.Add(openList[i].position);
+            }
+            return output;
         }
 
         public List<int[]> GetExploredPositions()
