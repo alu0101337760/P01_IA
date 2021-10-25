@@ -48,7 +48,7 @@ namespace IA_sim
             for (int i = 0; i < nodeList.Count; i++)
             {
                 if (nodeList[i].F >= node.F)
-                {                    
+                {
                     nodeList.Insert(i, node);
                     return;
                 }
@@ -104,7 +104,7 @@ namespace IA_sim
 
             for (int i = 0; i < forbiddenPositions.Count; i++)
             {
-                if (forbiddenPositions[i] == candidatePos)
+                if (forbiddenPositions[i][0] == candidatePos[0] && forbiddenPositions[i][1] == candidatePos[1])
                 {
                     return true;
                 }
@@ -130,7 +130,6 @@ namespace IA_sim
         private int CalculateManhattan(int[] currentPos)
         {
             return Math.Abs(currentPos[0] - target[0]) + Math.Abs(currentPos[1] - target[1]);
-            return Math.Abs(currentPos[0] - target[0]) + Math.Abs(currentPos[1] - target[1]);
         }
 
 
@@ -152,6 +151,9 @@ namespace IA_sim
                 if (currentNode.H == 0)
                 {
                     ///// FOUND A SOLUTION /////
+
+                    PathfindingManager.instance.DrawExploredNodes(GetExploredPositions());
+
                     return true;
                 }
 
@@ -173,6 +175,16 @@ namespace IA_sim
             }
 
             return false;
+        }
+
+        public List<int[]> GetExploredPositions()
+        {
+            List<int[]> output = new List<int[]>();
+            for (int i = 0; i < closedList.Count; i++)
+            {
+                output.Add(closedList[i].position);
+            }
+            return output;
         }
 
         public List<int[]> BacktrackSolution()
