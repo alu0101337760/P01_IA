@@ -11,8 +11,7 @@ namespace IA_sim
         public GameObject finalLocation;
 
         public GameObject[] locations;
-        public List<GameObject> obstacles;
-
+        public List<Vector3> obstacles;
         public int maxX;
         public int maxZ;
         public int obstaclePercentage;
@@ -33,7 +32,7 @@ namespace IA_sim
         {
             instance = this;
             locations = new GameObject[2];
-            obstacles = new List<GameObject>();
+            obstacles = new List<Vector3>();
         }
 
         public void SetObstaclePercentage(int p)
@@ -60,11 +59,7 @@ namespace IA_sim
         }
         public void InstantiateObstacle(Vector3 pos)
         {
-
-            obstacles.Add(Instantiate(obstacle));
-            Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
-            obstacleTransform.position = pos;
-
+            obstacles.Add(pos);
         }
 
         public void InstantiateInitialLocation(Vector3 pos)
@@ -96,8 +91,7 @@ namespace IA_sim
         {
             for (int i = 0; i < obstacles.Count; i++)
             {
-                GameObject toDelete = obstacles[i];
-                Destroy(toDelete);
+                GroundManager.instance.tiles[(int)obstacles[i].x][(int)obstacles[i].z].GetComponent<Material>().color = ;
             }
             obstacles.Clear();
         }

@@ -4,16 +4,22 @@ using UnityEngine;
 
 namespace IA_sim
 {
-    public class GroundPlacement : MonoBehaviour
+    public class GroundManager : MonoBehaviour
     {
         public List<GameObject> walls;
         public GameObject tile;
-        public List<GameObject> tiles;
+        public List<List<GameObject>> tiles;
         public float wallsHeight;
+
+        public static GroundManager instance;
 
         void Start()
         {
-
+            if (instance != null)
+            {
+                instance = this;
+                tiles = new List<List<GameObject>>();
+            }
         }
 
         private void CalculateWallsSize()
@@ -43,20 +49,11 @@ namespace IA_sim
             {
                 for (int j = 0; j <= z; j++)
                 {
-                    tiles.Add(Instantiate(tile));
-                    tiles[tiles.Count - 1].transform.position = new Vector3(i, 0f, j);
-                    tiles[tiles.Count - 1].transform.parent = this.transform;
+                    tiles[i].Add(Instantiate(tile));
+                    tiles[i][tiles.Count - 1].transform.position = new Vector3(i, 0f, j);
+                    tiles[i][tiles.Count - 1].transform.parent = this.transform;
                 }
             }
-
-            //    Vector3 scale = gameObject.transform.localScale;
-
-            //    scale.x *= x + 1;
-            //    scale.z *= z + 1;
-
-            //    gameObject.transform.localScale = scale;
-
-            //    gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
         }
 
 
