@@ -4,7 +4,7 @@ namespace IA_sim
 {
     public class Pathfinder
     {
-        int MaxX, MaxZ;
+        int maxX, maxY;
         List<Node> openList;
         List<Node> closedList;
         int[] initialPosition;
@@ -27,9 +27,13 @@ namespace IA_sim
             public float F, G, H;
         }
 
-        public Pathfinder()
+        public Pathfinder(int x, int y, int[] initial, int[] last, List<int[]> forbiddenPositions)
         {
-
+            this.maxX = x;
+            this.maxY = y;
+            initialPosition = initial;
+            target = last;
+            this.forbiddenPositions = forbiddenPositions;
         }
 
         int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 }, };
@@ -47,7 +51,7 @@ namespace IA_sim
 
         private int CheckIfPositionIsInList(List<Node> nodeList, int[] candidatePos)
         {
-            for (int i = nodeList.Count - 1; i >= 0; i++)
+            for (int i = nodeList.Count - 1; i >= 0; i--)
             {
                 if (nodeList[i].position == candidatePos)
                 {
@@ -61,9 +65,9 @@ namespace IA_sim
         {
             return
                 candidatePos[0] < 0 ||
-                candidatePos[0] > MaxX ||
+                candidatePos[0] > maxX ||
                 candidatePos[1] < 0 ||
-                candidatePos[1] > MaxZ;
+                candidatePos[1] > maxY;
         }
 
         private bool CheckIfPostionIsForbidden(int[] candidatePos)
@@ -99,7 +103,7 @@ namespace IA_sim
         }
 
 
-        bool simulate()
+       public bool simulate()
         {
             openList = new List<Node>();
             closedList = new List<Node>();
