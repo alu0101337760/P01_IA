@@ -21,16 +21,16 @@ namespace IA_sim
             float x = PlacementManager.instance.maxX;
             float z = PlacementManager.instance.maxZ;
 
-            walls[0].transform.position = gameObject.transform.position + new Vector3(x / 2f + 1f, 0f, 0f);
+            walls[0].transform.position = new Vector3(x + 1f, 0f, z / 2f);
             walls[0].transform.localScale = new Vector3(walls[0].transform.localScale.x, walls[0].transform.localScale.y, walls[0].transform.localScale.z * z + 3);
 
-            walls[1].transform.position = gameObject.transform.position + new Vector3(-x / 2f - 1f, 0f, 0f);
+            walls[1].transform.position = new Vector3(-1f, 0f, z / 2f);
             walls[1].transform.localScale = new Vector3(walls[1].transform.localScale.x, walls[1].transform.localScale.y, walls[1].transform.localScale.z * z + 3);
 
-            walls[2].transform.position = gameObject.transform.position + new Vector3(0f, 0f, z / 2f + 1f);
+            walls[2].transform.position = new Vector3(x / 2f, 0f, z + 1f);
             walls[2].transform.localScale = new Vector3(walls[2].transform.localScale.x * x + 3, walls[2].transform.localScale.y, walls[2].transform.localScale.z);
 
-            walls[3].transform.position = gameObject.transform.position + new Vector3(0f, 0f, -z / 2f - 1f);
+            walls[3].transform.position = new Vector3(x / 2f, 0f, -1f);
             walls[3].transform.localScale = new Vector3(walls[3].transform.localScale.x * x + 3, walls[3].transform.localScale.y, walls[3].transform.localScale.z);
         }
 
@@ -39,9 +39,9 @@ namespace IA_sim
             int x = PlacementManager.instance.maxX;
             int z = PlacementManager.instance.maxZ;
 
-            for (int i= 0; i<= x; i++)
+            for (int i = 0; i <= x; i++)
             {
-                for (int j = 0; j<= z; j++)
+                for (int j = 0; j <= z; j++)
                 {
                     tiles.Add(Instantiate(tile));
                     tiles[tiles.Count - 1].transform.position = new Vector3(i, 0f, j);
@@ -49,14 +49,14 @@ namespace IA_sim
                 }
             }
 
-        //    Vector3 scale = gameObject.transform.localScale;
+            //    Vector3 scale = gameObject.transform.localScale;
 
-        //    scale.x *= x + 1;
-        //    scale.z *= z + 1;
+            //    scale.x *= x + 1;
+            //    scale.z *= z + 1;
 
-        //    gameObject.transform.localScale = scale;
+            //    gameObject.transform.localScale = scale;
 
-        //    gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
+            //    gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
         }
 
 
