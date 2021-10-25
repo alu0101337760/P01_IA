@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exploredNode: {fileID: 7150458405857071795, guid: 7dedf3a310442a3448531f059a5c1866, type: 3}
-  exploredPositions: []
+  slider: {fileID: 1084219553}
 --- !u!1 &324022078 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3954695932849734841, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
@@ -344,6 +344,10 @@ PrefabInstance:
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6966294899058103934, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6976037935939184454, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_Name
       value: Interface
@@ -400,6 +404,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 39363608}
+    - target: {fileID: 8411028848084356594, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8785234384525781543, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -447,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a18ae752aa517174eb99e3253e3fc684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTimelineSlider: 0
 --- !u!1001 &725268362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -671,6 +680,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1084219553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5801743829452968284, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+  m_PrefabInstance: {fileID: 509661482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1838143866
 GameObject:
   m_ObjectHideFlags: 0

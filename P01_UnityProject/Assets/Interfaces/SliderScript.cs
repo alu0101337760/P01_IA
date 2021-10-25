@@ -27,6 +27,6 @@ namespace IA_sim
         public void SetMaxValue(int value)
         {
             gameObject.GetComponent<Slider>().maxValue = value;
-        }
+        }      
     }
 }
