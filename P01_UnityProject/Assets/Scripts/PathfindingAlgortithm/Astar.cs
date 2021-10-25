@@ -112,7 +112,7 @@ namespace IA_sim
 
             openList.Add(new Node(null, initialPosition, 0, CalculateManhattan(initialPosition)));
 
-            while (openList.Count != 0 && closedList.Count < 300)
+            while (openList.Count != 0)
             {
                 //we add the node with the least F value to the closed node list
                 currentNode = openList[0];
