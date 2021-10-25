@@ -6,16 +6,20 @@ namespace IA_sim
 {
     public class PathfindingManager : MonoBehaviour
     {
-        private Pathfinder pathfinder;
+        public GameObject exploredNode;
+        private Astar pathfinder;
+
+        public List<GameObject> exploredNodes;
 
         private void Start()
         {
 
         }
+             
 
         private int[] TranslatePositions(Vector3 pos)
         {
-            return new int[2] { (int)pos.x, (int)pos.y };
+            return new int[2] { (int)pos.x, (int)pos.z };
         }
         private List<int[]> TranslateForbiddenPositions(List<Vector3> forbiddenPositions)
         {
@@ -58,7 +62,7 @@ namespace IA_sim
                 Vector3[] obstaclePositions = PlacementManager.instance.GetObstaclePositions();
                 List<int[]> forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
-                pathfinder = new Pathfinder(maxX, maxZ, initial, final, forbiddenPos);
+                pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
                 if (pathfinder.simulate())
                 {
                     Debug.Log("found a path");

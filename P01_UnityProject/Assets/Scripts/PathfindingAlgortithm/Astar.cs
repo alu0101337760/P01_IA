@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 namespace IA_sim
 {
-    public class Pathfinder
+    public class Astar
     {
         int maxX, maxY;
         List<Node> openList;
@@ -13,21 +13,20 @@ namespace IA_sim
 
         private class Node
         {
-            public Node(int[] pos, int[] lastPos, float g, float h)
+            public Node(Node parent, int[] pos, float g, float h)
             {
+                this.parent = parent;
                 position = pos;
-                lastPosition = lastPos;
                 G = g;
                 H = h;
                 F = G + H;
             }
-
+            public Node parent;
             public int[] position;
-            public int[] lastPosition;
             public float F, G, H;
         }
 
-        public Pathfinder(int x, int y, int[] initial, int[] last, List<int[]> forbiddenPositions)
+        public Astar(int x, int y, int[] initial, int[] last, List<int[]> forbiddenPositions)
         {
             this.maxX = x;
             this.maxY = y;
@@ -38,14 +37,44 @@ namespace IA_sim
 
         int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 }, };
 
+
+        private void InsertInList()
+        {
+
+        }
+
         private void OrderedInsert(List<Node> nodeList, Node node)
         {
             for (int i = 0; i < nodeList.Count; i++)
             {
-                if (node.F < nodeList[i].F)
-                {
+                if (nodeList[i].F >= node.F)
+                {                    
                     nodeList.Insert(i, node);
+                    return;
                 }
+            }
+            nodeList.Insert(nodeList.Count, node);
+        }
+
+
+        private void CheckAndSolveIfAlreadyACandidate(Node candidate)
+        {
+            bool candidateIsBetter = true;
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (candidate.position == openList[i].position)
+                {
+                    candidateIsBetter = false;
+                    if (candidate.G < openList[i].G)
+                    {
+                        openList.RemoveAt(i);
+                        candidateIsBetter = true;
+                    }
+                }
+            }
+            if (candidateIsBetter)
+            {
+                OrderedInsert(openList, candidate);
             }
         }
 
@@ -72,6 +101,7 @@ namespace IA_sim
 
         private bool CheckIfPostionIsForbidden(int[] candidatePos)
         {
+
             for (int i = 0; i < forbiddenPositions.Count; i++)
             {
                 if (forbiddenPositions[i] == candidatePos)
@@ -85,7 +115,7 @@ namespace IA_sim
 
         private bool CheckIfPositionIsValid(int[] candidatePos, List<Node> closedList)
         {
-            if (CheckIfPositionIsInList(closedList, candidatePos) < 0)
+            if (CheckIfPositionIsInList(closedList, candidatePos) >= 0)
                 return false;
 
             if (CheckIfPositionIsOutOfBounds(candidatePos))
@@ -100,18 +130,19 @@ namespace IA_sim
         private int CalculateManhattan(int[] currentPos)
         {
             return Math.Abs(currentPos[0] - target[0]) + Math.Abs(currentPos[1] - target[1]);
+            return Math.Abs(currentPos[0] - target[0]) + Math.Abs(currentPos[1] - target[1]);
         }
 
 
-       public bool simulate()
+        public bool simulate()
         {
             openList = new List<Node>();
             closedList = new List<Node>();
             Node currentNode;
 
-            openList.Add(new Node(initialPosition, new int[] { 0, 0 }, 0, CalculateManhattan(initialPosition)));
+            openList.Add(new Node(null, initialPosition, 0, CalculateManhattan(initialPosition)));
 
-            while (openList.Count != 0)
+            while (openList.Count != 0 && closedList.Count < 1000)
             {
                 //we add the node with the least F value to the closed node list
                 currentNode = openList[0];
@@ -135,31 +166,27 @@ namespace IA_sim
                     {
                         continue;
                     }
-                    //if the position is already in the open list, this path might
-                    //be more efficent, so we check the G value.
 
-                    int index = CheckIfPositionIsInList(openList, childPosition);
-                    if (index >= 0)
-                    {
-                        if (openList[index].G > childG)
-                        {
-                            openList.RemoveAt(index);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                    OrderedInsert(openList, new Node(childPosition, currentNode.position, childG, CalculateManhattan(childPosition)));
-
+                    Node ChildNode = new Node(currentNode, childPosition, childG, CalculateManhattan(childPosition));
+                    CheckAndSolveIfAlreadyACandidate(ChildNode);
                 }
             }
 
             return false;
         }
 
-
+        public List<int[]> BacktrackSolution()
+        {
+            List<int[]> output = new List<int[]>();
+            Node lastNode = closedList[closedList.Count - 1];
+            Node currentNode = lastNode;
+            while (currentNode.parent != null)
+            {
+                output.Add(currentNode.position);
+                currentNode = currentNode.parent;
+            }
+            return output;
+        }
 
     }
 }
