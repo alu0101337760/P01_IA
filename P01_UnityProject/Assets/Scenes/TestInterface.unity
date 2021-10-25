@@ -159,8 +159,8 @@ MonoBehaviour:
   finalLocation: {fileID: 4911879544242295325, guid: 4628b475517f86340b44060eac35f8bb, type: 3}
   locations: []
   obstacles: []
-  maxX: 20
-  maxZ: 15
+  maxX: 0
+  maxZ: 0
   obstaclePercentage: 0
 --- !u!4 &39363607
 Transform:
