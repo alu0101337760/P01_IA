@@ -15,7 +15,7 @@ namespace IA_sim
 
         private Astar pathfinder;
         private List<GameObject> instancedMarks;
-
+        private VisualizerOptimization optimizer;
         private void Start()
         {
             if (instance == null)
@@ -87,11 +87,14 @@ namespace IA_sim
             //we draw the explored nodes
             if (exploredPositions.Count != 0)
             {
-                for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
+                optimizer = new VisualizerOptimization(exploredPositions.GetRange(0, Math.Min(exploredPositions.Count, threshold)));
+                for (int i = 0; i < optimizer.squares.Count; i++)
                 {
                     instancedMarks.Add(Instantiate(plane));
-                    instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
-                    instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
+                    Transform currentTransform = instancedMarks[instancedMarks.Count - 1].transform;
+                    currentTransform.position = new Vector3(optimizer.squares[i].centerPosition[0], 0.1f, optimizer.squares[i].centerPosition[1]);
+                    currentTransform.localScale = new Vector3(optimizer.squares[i].edgeSize * .1f, 0, optimizer.squares[i].edgeSize * .1f);
+                    currentTransform.parent = this.transform;
                     instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
                 }
                 //draw the candidates, applying the operators to all of the 
@@ -104,9 +107,9 @@ namespace IA_sim
 
                         if (!CheckIfAlreadyRendered(candidatePos))
                         {
-                            instancedMarks.Add(Instantiate(plane));
-                            instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.075f, candidatePos[1]);
-                            instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
+                        //    instancedMarks.Add(Instantiate(plane));
+                        //    instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.075f, candidatePos[1]);
+                        //    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
                         }
 
                     }
