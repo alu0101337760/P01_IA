@@ -1,27 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IA_sim {
+namespace IA_sim
+{
     public class InputFieldScript : MonoBehaviour
     {
         public bool isMaxX = false;
-       
+
         // Start is called before the first frame update
         void Start()
         {
-            if (isMaxX)
+
+        }
+
+        private void Update()
+        {
+            if (GroundManager.instance != null)
             {
-                gameObject.GetComponent<TMPro.TMP_InputField>().onEndEdit.AddListener(delegate
+                if (isMaxX)
                 {
-                    PlacementManager.instance.SetMaxX(gameObject.GetComponent<TMPro.TMP_InputField>().text);    
-                });
-            }
-            else
-            {
-                gameObject.GetComponent<TMPro.TMP_InputField>().onEndEdit.AddListener(delegate
+                    gameObject.GetComponent<TMPro.TMP_InputField>().onEndEdit.AddListener(delegate
+                    {
+                        GroundManager.instance.SetMaxX(gameObject.GetComponent<TMPro.TMP_InputField>().text);
+                    });
+                    Destroy(this);
+                }
+                else
                 {
-                    PlacementManager.instance.SetMaxZ(gameObject.GetComponent<TMPro.TMP_InputField>().text);
-                });
+                    gameObject.GetComponent<TMPro.TMP_InputField>().onEndEdit.AddListener(delegate
+                    {
+                        GroundManager.instance.SetMaxZ(gameObject.GetComponent<TMPro.TMP_InputField>().text);
+                    });
+                    Destroy(this);
+                }
             }
         }
     }

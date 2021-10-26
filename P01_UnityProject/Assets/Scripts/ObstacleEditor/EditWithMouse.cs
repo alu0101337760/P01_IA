@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace IA_sim
@@ -21,11 +22,11 @@ namespace IA_sim
             AddObstacles = false;
         }
 
-        private bool CheckIfPositionIsValid(Vector3[] positions, Vector3 candidate)
+        private bool CheckIfPositionIsValid(List<Vector3> positions, Vector3 candidate)
         {
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < positions.Count; i++)
             {
-                if (positions[i] == candidate || candidate.x > PlacementManager.instance.maxX || candidate.z > PlacementManager.instance.maxZ)
+                if (positions[i] == candidate || candidate.x > GroundManager.instance.maxX || candidate.z > GroundManager.instance.maxZ)
                 {
                     return false;
                 }
@@ -48,7 +49,7 @@ namespace IA_sim
             AddObstacles = false;
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                Vector3[] forbiddenPositions = PlacementManager.instance.GetObstaclePositions();
+                List<Vector3> forbiddenPositions = PlacementManager.instance.obstacles;
                 Vector3 clickPosition = new Vector3();
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -73,7 +74,7 @@ namespace IA_sim
             AddObstacles = false;
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                Vector3[] forbiddenPositions = PlacementManager.instance.GetObstaclePositions();
+                List<Vector3> forbiddenPositions = PlacementManager.instance.obstacles;
                 Vector3 clickPosition = new Vector3();
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -95,7 +96,8 @@ namespace IA_sim
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                Vector3[] forbiddenPositions = PlacementManager.instance.GetObstaclePositions();
+
+                List<Vector3> forbiddenPositions = PlacementManager.instance.obstacles;
                 Vector3 clickPosition = new Vector3();
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -124,9 +126,8 @@ namespace IA_sim
                 {
                     if (hit.collider.gameObject.tag == "Obstacle")
                     {
-                        GameObject target = hit.collider.gameObject;
-                        PlacementManager.instance.obstacles.Remove(target);
-                        Destroy(target);
+                        Vector3 targetPos = hit.collider.gameObject.transform.position;
+                        PlacementManager.instance.DestroyObstacle(targetPos);
                     }
                 }
             }

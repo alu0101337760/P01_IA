@@ -154,13 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0462b9c931c8e5c4dbc9350becc74cba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 2037246547323680961, guid: bc73071739e3de745bbdaa4cc2236ff5, type: 3}
   taxi: {fileID: 7020775553459277436, guid: 87977cf026741984f88396fbc70538f1, type: 3}
   finalLocation: {fileID: 4911879544242295325, guid: 4628b475517f86340b44060eac35f8bb, type: 3}
   locations: []
   obstacles: []
-  maxX: 0
-  maxZ: 0
   obstaclePercentage: 0
 --- !u!4 &39363607
 Transform:
@@ -254,6 +251,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 39363608}
     - target: {fileID: 2810149544619363263, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2810149544619363263, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 0}
@@ -340,6 +341,10 @@ PrefabInstance:
     - target: {fileID: 5616264572130992706, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5785684822939819183, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -467,6 +472,14 @@ PrefabInstance:
     - target: {fileID: 3705658602223737823, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
       propertyPath: m_Name
       value: Terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 3993387857830006655, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
+      propertyPath: maxX
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3993387857830006655, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
+      propertyPath: maxZ
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6879123833813337450, guid: 1837f2258485b24478dadc92e3ee989a, type: 3}
       propertyPath: m_RootOrder

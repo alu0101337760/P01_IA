@@ -6,14 +6,11 @@ namespace IA_sim
 {
     public class PlacementManager : MonoBehaviour
     {
-        public GameObject obstacle;
         public GameObject taxi;
         public GameObject finalLocation;
 
         public GameObject[] locations;
         public List<Vector3> obstacles;
-        public int maxX;
-        public int maxZ;
         public int obstaclePercentage;
 
         public static PlacementManager instance;
@@ -25,7 +22,6 @@ namespace IA_sim
             {
                 build();
             }
-            RandomSpawn();
         }
 
         private void build()
@@ -40,26 +36,20 @@ namespace IA_sim
             Debug.Log(p);
             obstaclePercentage = p;
         }
-
-        public void SetMaxX(string str)
-        {
-            Debug.Log(str);
-            if (maxX == 0)
-            {
-                maxX = int.Parse(str);
-            }
-        }
-        public void SetMaxZ(string str)
-        {
-            Debug.Log(str);
-            if (maxZ == 0)
-            {
-                maxZ = int.Parse(str);
-            }
-        }
+           
+       
         public void InstantiateObstacle(Vector3 pos)
         {
             obstacles.Add(pos);
+            GroundManager.instance.tiles[(int)pos.x][(int)pos.z].GetComponent<MeshRenderer>().material.color = Color.red;
+            GroundManager.instance.tiles[(int)pos.x][(int)pos.z].tag = "Obstacle";
+        }
+
+        public void DestroyObstacle(Vector3 pos)
+        {
+            GroundManager.instance.tiles[(int)pos.x][(int)pos.z].GetComponent<MeshRenderer>().material.color = Color.gray;
+            GroundManager.instance.tiles[(int)pos.x][(int)pos.z].tag = "Ground";
+            obstacles.Remove(pos);
         }
 
         public void InstantiateInitialLocation(Vector3 pos)
@@ -91,7 +81,8 @@ namespace IA_sim
         {
             for (int i = 0; i < obstacles.Count; i++)
             {
-                GroundManager.instance.tiles[(int)obstacles[i].x][(int)obstacles[i].z].GetComponent<Material>().color = ;
+                GroundManager.instance.tiles[(int)obstacles[i].x][(int)obstacles[i].z].GetComponent<MeshRenderer>().material.color = Color.gray;
+                GroundManager.instance.tiles[(int)obstacles[i].x][(int)obstacles[i].z].tag = "Ground";
             }
             obstacles.Clear();
         }
@@ -104,9 +95,9 @@ namespace IA_sim
             int obstacleSum = 0;
 
             // we build a list with all the posible locations 
-            for (int i = 0; i <= maxX; i++)
+            for (int i = 0; i <= GroundManager.instance.maxX; i++)
             {
-                for (int j = 0; j <= maxZ; j++)
+                for (int j = 0; j <= GroundManager.instance.maxZ; j++)
                 {
                     freeLocations.Add(new Vector3(i, 0, j));
                 }
@@ -125,28 +116,8 @@ namespace IA_sim
 
         private int CalculateNumberOfObstacles()
         {
-            int matrixsize = maxX * maxZ;
+            int matrixsize = GroundManager.instance.maxX * GroundManager.instance.maxZ;
             return (int)((matrixsize * obstaclePercentage) / 100);
-        }
-
-        public Vector3[] GetLocations() { 
-            Vector3[] output = new Vector3[2];
-
-            output[0] = locations[0].transform.position;
-            output[1] = locations[1].transform.position;
-
-            return output;
-        }
-
-        public Vector3[] GetObstaclePositions()
-        {
-            Vector3[] output = new Vector3[obstacles.Count];
-
-            for (int i = 0; i < output.Length; i++)
-            {
-                output[i] = obstacles[i].transform.position;
-            }
-            return output;
-        }
+        }         
     }
 }

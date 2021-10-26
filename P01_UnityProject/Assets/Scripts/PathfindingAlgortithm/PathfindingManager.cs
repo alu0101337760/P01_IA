@@ -44,10 +44,10 @@ namespace IA_sim
         }
 
 
-        private List<int[]> TranslateForbiddenPositions(Vector3[] forbiddenPositions)
+        private List<int[]> TranslateForbiddenPositions(List<Vector3> forbiddenPositions)
         {
             List<int[]> output = new List<int[]>();
-            for (int i = 0; i < forbiddenPositions.Length; i++)
+            for (int i = 0; i < forbiddenPositions.Count; i++)
             {
                 output.Add(TranslatePositions(forbiddenPositions[i]));
             }
@@ -58,8 +58,8 @@ namespace IA_sim
         private bool CheckConditions()
         {
             return
-                PlacementManager.instance.maxX != 0 &&
-                PlacementManager.instance.maxZ != 0 &&
+                GroundManager.instance.maxX != 0 &&
+                GroundManager.instance.maxZ != 0 &&
                 PlacementManager.instance.locations[0] != null &&
                 PlacementManager.instance.locations[1] != null;
         }
@@ -104,12 +104,13 @@ namespace IA_sim
         {
             if (CheckConditions())
             {
-                int maxX = PlacementManager.instance.maxX;
-                int maxZ = PlacementManager.instance.maxZ;
+                int maxX = GroundManager.instance.maxX;
+                int maxZ = GroundManager.instance.maxZ;
                 int[] initial = TranslatePositions(PlacementManager.instance.locations[0].transform.position);
                 int[] final = TranslatePositions(PlacementManager.instance.locations[1].transform.position);
 
-                Vector3[] obstaclePositions = PlacementManager.instance.GetObstaclePositions();
+
+                List<Vector3> obstaclePositions = PlacementManager.instance.obstacles;
                 forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
                 pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
