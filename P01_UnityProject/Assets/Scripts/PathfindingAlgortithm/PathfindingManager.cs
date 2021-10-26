@@ -6,8 +6,7 @@ namespace IA_sim
 {
     public class PathfindingManager : MonoBehaviour
     {
-        public GameObject yellowPlane;
-        public GameObject GreenPlane;
+        public GameObject plane;
         public List<int[]> exploredPositions;
         public static PathfindingManager instance;
         List<int[]> forbiddenPos;
@@ -64,6 +63,21 @@ namespace IA_sim
                 PlacementManager.instance.locations[1] != null;
         }
 
+        private bool CheckIfAlreadyRendered(int[] candidatePos)
+        {
+            bool output = false;
+
+            for (int i = instancedMarks.Count - 1; i >= 0; i--)
+            {
+                if ((int)instancedMarks[i].transform.position.x == candidatePos[0] && (int)instancedMarks[i].transform.position.z == candidatePos[1])
+                {
+                    output = true;
+                    break;
+                }
+            }
+
+            return output || forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
+        }
 
         public void DrawExploredNodes(int threshold)
         {
@@ -75,23 +89,24 @@ namespace IA_sim
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    instancedMarks.Add(Instantiate(yellowPlane));
+                    instancedMarks.Add(Instantiate(plane));
                     instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
-
-                    //draw the candidates, applying the operators to all of the 
-                    //explored nodes and making sure the positions are not occupied already
+                    instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
+                    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                }
+                //draw the candidates, applying the operators to all of the 
+                //explored nodes and making sure the positions are not occupied already
+                for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
+                {
                     for (int j = 0; j < operations.Length; j++)
                     {
                         int[] candidatePos = new int[2] { exploredPositions[i][0] + operations[j][0], exploredPositions[i][1] + operations[j][1] };
 
-                        if (instancedMarks.Exists(instancedMark => forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1])))
+                        if (!CheckIfAlreadyRendered(candidatePos))
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            instancedMarks.Add(Instantiate(GreenPlane));
-                            instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.75f, candidatePos[1]);
+                            instancedMarks.Add(Instantiate(plane));
+                            instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.075f, candidatePos[1]);
+                            instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
                         }
 
                     }

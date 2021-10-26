@@ -60,11 +60,10 @@ namespace IA_sim
         }
         public void InstantiateObstacle(Vector3 pos)
         {
-
             obstacles.Add(Instantiate(obstacle));
             Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
             obstacleTransform.position = pos;
-
+            obstacleTransform.parent = this.transform;
         }
 
         public void InstantiateInitialLocation(Vector3 pos)
@@ -89,6 +88,7 @@ namespace IA_sim
             locations[1] = Instantiate(finalLocation);
             Transform transform = locations[1].transform;
             transform.position = pos;
+
         }
 
 
