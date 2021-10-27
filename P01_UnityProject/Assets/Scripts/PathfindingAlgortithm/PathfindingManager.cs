@@ -96,10 +96,11 @@ namespace IA_sim
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    instancedMarks.Add(Instantiate(plane));
-                    instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i])+ new Vector3(0,0.05f,0);
-                    instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
-                    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                    //instancedMarks.Add(Instantiate(plane));
+                    //instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i])+ new Vector3(0,0.05f,0);
+                    //instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
+                    //instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                    Camera.main.GetComponent<DrawQuadGL>().DrawGLQuads(exploredPositions.GetRange(0, threshold), Color.yellow);
                 }
                 //draw the candidates, applying the operators to all of the 
                 //explored nodes and making sure the positions are not occupied already
@@ -111,9 +112,9 @@ namespace IA_sim
 
                         if (!CheckIfAlreadyRendered(candidatePos))
                         {
-                            instancedMarks.Add(Instantiate(plane));
-                            instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(candidatePos)+ new Vector3(0, 0.01f, 0);
-                            instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
+                            //instancedMarks.Add(Instantiate(plane));
+                            //instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(candidatePos)+ new Vector3(0, 0.01f, 0);
+                            //instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
                         }
 
                     }
