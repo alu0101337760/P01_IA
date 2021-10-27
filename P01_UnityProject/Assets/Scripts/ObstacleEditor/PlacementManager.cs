@@ -58,18 +58,37 @@ namespace IA_sim
                 maxZ = int.Parse(str);
             }
         }
+
+        private bool CheckIfCollidesWithLocations(Vector3 pos)
+        {
+            if (locations[0]!=null)
+            {
+                if (locations[0].transform.position.x == pos.x && locations[0].transform.position.z == pos.z) { return true; }
+            }
+            if (locations[1] != null)
+            {
+                if (locations[1].transform.position.x == pos.x && locations[1].transform.position.z == pos.z) { return true; }
+            }
+
+            return false;
+        }
+
         public void InstantiateObstacle(Vector3 pos)
         {
-            obstacles.Add(Instantiate(obstacle));
-            Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
-            obstacleTransform.position = pos;
-            obstacleTransform.parent = this.transform;
+
+            if (!CheckIfCollidesWithLocations(pos))
+            {
+                obstacles.Add(Instantiate(obstacle));
+                Transform obstacleTransform = obstacles[obstacles.Count - 1].GetComponent<Transform>();
+                obstacleTransform.position = pos;
+                obstacleTransform.parent = this.transform;
+            }
         }
 
         public void InstantiateInitialLocation(Vector3 pos)
         {
             if (locations[0] != null)
-            {                
+            {
                 Destroy(locations[0]);
             }
             pos = new Vector3(pos.x, 0.2f, pos.z);
@@ -118,6 +137,9 @@ namespace IA_sim
                 }
             }
 
+            if (locations[0] != null) { freeLocations.Remove(locations[0].transform.position); }
+            if (locations[1] != null) { freeLocations.Remove(locations[1].transform.position); }
+
             //we randomly access to the elments of the list, instantiating an obstacle
             //and removing that element from the list.
             while (obstacleSum < numberOfObstacles)
@@ -135,7 +157,8 @@ namespace IA_sim
             return (int)((matrixsize * obstaclePercentage) / 100);
         }
 
-        public Vector3[] GetLocations() { 
+        public Vector3[] GetLocations()
+        {
             Vector3[] output = new Vector3[2];
 
             output[0] = locations[0].transform.position;

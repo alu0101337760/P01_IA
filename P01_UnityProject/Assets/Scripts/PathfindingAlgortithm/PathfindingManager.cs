@@ -36,8 +36,11 @@ namespace IA_sim
             list.Clear();
         }
 
-
-        private int[] TranslatePositions(Vector3 pos)
+        private Vector3 ToVector3(int[] pos)
+        {
+            return new Vector3(pos[0], 0, pos[1]);
+        }
+        private int[] ToIntArr(Vector3 pos)
         {
             return new int[2] { (int)pos.x, (int)pos.z };
         }
@@ -48,7 +51,7 @@ namespace IA_sim
             List<int[]> output = new List<int[]>();
             for (int i = 0; i < forbiddenPositions.Length; i++)
             {
-                output.Add(TranslatePositions(forbiddenPositions[i]));
+                output.Add(ToIntArr(forbiddenPositions[i]));
             }
             return output;
         }
@@ -65,18 +68,18 @@ namespace IA_sim
 
         private bool CheckIfAlreadyRendered(int[] candidatePos)
         {
-            bool output = false;
+            //bool output = false;
 
-            for (int i = instancedMarks.Count - 1; i >= 0; i--)
-            {
-                if ((int)instancedMarks[i].transform.position.x == candidatePos[0] && (int)instancedMarks[i].transform.position.z == candidatePos[1])
-                {
-                    output = true;
-                    break;
-                }
-            }
+            //for (int i = instancedMarks.Count - 1; i >= 0; i--)
+            //{
+            //    if ((int)instancedMarks[i].transform.position.x == candidatePos[0] && (int)instancedMarks[i].transform.position.z == candidatePos[1])
+            //    {
+            //        output = true;
+            //        break;
+            //    }
+            //}
 
-            return output || forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
+            return instancedMarks.Exists(x => ToIntArr(x.transform.position).Equals(candidatePos)) || forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
         }
 
         public void DrawExploredNodes(int threshold)
@@ -90,7 +93,7 @@ namespace IA_sim
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
                     instancedMarks.Add(Instantiate(plane));
-                    instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(exploredPositions[i][0], 0.1f, exploredPositions[i][1]);
+                    instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i])+ new Vector3(0,0.05f,0);
                     instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
                     instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
                 }
@@ -105,7 +108,7 @@ namespace IA_sim
                         if (!CheckIfAlreadyRendered(candidatePos))
                         {
                             instancedMarks.Add(Instantiate(plane));
-                            instancedMarks[instancedMarks.Count - 1].transform.position = new Vector3(candidatePos[0], 0.075f, candidatePos[1]);
+                            instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(candidatePos)+ new Vector3(0, 0.01f, 0);
                             instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
                         }
 
@@ -121,8 +124,8 @@ namespace IA_sim
             {
                 int maxX = PlacementManager.instance.maxX;
                 int maxZ = PlacementManager.instance.maxZ;
-                int[] initial = TranslatePositions(PlacementManager.instance.locations[0].transform.position);
-                int[] final = TranslatePositions(PlacementManager.instance.locations[1].transform.position);
+                int[] initial = ToIntArr(PlacementManager.instance.locations[0].transform.position);
+                int[] final = ToIntArr(PlacementManager.instance.locations[1].transform.position);
 
                 Vector3[] obstaclePositions = PlacementManager.instance.GetObstaclePositions();
                 forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
