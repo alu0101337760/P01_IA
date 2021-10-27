@@ -9,13 +9,13 @@ namespace IA_sim
         public GameObject plane;
         public List<int[]> exploredPositions;
         public static PathfindingManager instance;
-        List<int[]> forbiddenPos;
+        List<int[]> forbiddenPos;     
 
         public Slider slider;
 
         public bool diagonalMode = false;
-        public char heuristicMode = 'm';
-        public char costMode = '1';
+        public bool diagonalsCosts2 = false;
+        public Astar.HeuristicMode heuristicMode = Astar.HeuristicMode.Manhattan;
 
         private Astar pathfinder;
         private List<GameObject> instancedMarks;
@@ -136,7 +136,7 @@ namespace IA_sim
                 forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
                 pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
-                if (pathfinder.simulate(heuristicMode, costMode, diagonalMode))
+                if (pathfinder.simulate(heuristicMode, diagonalsCosts2, diagonalMode))
                 {
                     Debug.Log("found a path");
                 }

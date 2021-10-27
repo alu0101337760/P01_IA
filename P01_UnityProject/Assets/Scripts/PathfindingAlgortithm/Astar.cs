@@ -15,7 +15,6 @@ namespace IA_sim
 
         Node initialNode;
         Node finalNode;
-
         public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 },
                                       new int[2] { 1, 1 }, new int[2] { 1, -1 }, new int[2] { -1, 1 }, new int[2] { -1, -1 }};
 
@@ -49,6 +48,13 @@ namespace IA_sim
                 F = G + H;
             }
         }
+
+        public enum HeuristicMode
+        {
+            Manhattan,
+            Euclid
+        }
+
 
         public Astar(int x, int y, int[] initial, int[] last, List<int[]> forbiddenPositions)
         {
@@ -114,16 +120,16 @@ namespace IA_sim
             !CheckIfPostionIsForbidden(candidate);
         }
 
-        private float CalculateHeuristic(int x, int y, char mode)
+        private float CalculateHeuristic(int x, int y, HeuristicMode mode)
         {
             switch (mode)
             {
                 //manhattan
-                case 'm':
+                case HeuristicMode.Manhattan:
                     return Math.Abs(x - target[0]) + Math.Abs(y - target[1]);
 
                 //euclid
-                case 'e':
+                case HeuristicMode.Euclid:
                     return (float)Math.Sqrt(Math.Pow(x - target[0], 2));
 
                 //manhattan by default
@@ -133,12 +139,12 @@ namespace IA_sim
             }
         }
 
-        private float CalculateGValue(Node parent, int operationIndex, char mode)
+        private float CalculateGValue(Node parent, int operationIndex, bool diagonalCosts2)
         {
-            return mode == '2' && operationIndex > 3 ? parent.G + 2 : parent.G + 1;
+            return diagonalCosts2 && operationIndex > 3 ? parent.G + 2 : parent.G + 1;
         }
 
-        public bool simulate(char Hmode, char Gmode, bool diagonal)
+        public bool simulate(HeuristicMode Hmode, bool DiagonalCosts2, bool diagonal)
         {
             hashSetComparer nc = new hashSetComparer();
             openList = new List<Node>();
@@ -172,7 +178,7 @@ namespace IA_sim
                 {
                     childX = currentNode.x + operations[i][0];
                     childY = currentNode.y + operations[i][1];
-                    Node childNode = new Node(currentNode, childX, childY, CalculateGValue(currentNode, i, Gmode), CalculateHeuristic(childX, childY, Hmode));
+                    Node childNode = new Node(currentNode, childX, childY, CalculateGValue(currentNode, i, DiagonalCosts2), CalculateHeuristic(childX, childY, Hmode));
 
                     //If the position is invalid, continue
                     if (CheckIfPositionIsValid(childNode, closedList))
