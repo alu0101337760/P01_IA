@@ -16,7 +16,9 @@ namespace IA_sim
         Node initialNode;
         Node finalNode;
 
-        public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 }, };
+        public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 },
+                                      new int[2] { 1, 1 }, new int[2] { 1, -1 }, new int[2] { -1, 1 }, new int[2] { -1, -1 }};
+
         private class hashSetComparer : IEqualityComparer<Node>
         {
             public bool Equals(Node x, Node y)
@@ -30,6 +32,7 @@ namespace IA_sim
                 return hCode.GetHashCode();
             }
         }
+
         private class Node
         {
             public Node parent;
@@ -69,7 +72,6 @@ namespace IA_sim
             nodeList.Insert(nodeList.Count, node);
         }
 
-
         private void CheckAndSolveIfAlreadyACandidate(Node candidate)
         {
             bool candidateIsBetter = true;
@@ -89,11 +91,6 @@ namespace IA_sim
             {
                 OrderedInsert(openList, candidate);
             }
-        }
-
-        private bool CheckIfPositionIsInList(List<Node> nodeList, Node candidate)
-        {
-            return nodeList.Exists(node => node == candidate);
         }
 
         private bool CheckIfPositionIsOutOfBounds(Node candidate)
@@ -117,21 +114,40 @@ namespace IA_sim
             !CheckIfPostionIsForbidden(candidate);
         }
 
-        private int CalculateManhattan(int x, int y)
+        private float CalculateHeuristic(int x, int y, char mode)
         {
-            return Math.Abs(x - target[0]) + Math.Abs(y - target[1]);
+            switch (mode)
+            {
+                //manhattan
+                case 'm':
+                    return Math.Abs(x - target[0]) + Math.Abs(y - target[1]);
+
+                //euclid
+                case 'e':
+                    return (float)Math.Sqrt(Math.Pow(x - target[0], 2));
+
+                //manhattan by default
+                default:
+                    return Math.Abs(x - target[0]) + Math.Abs(y - target[1]);
+
+            }
         }
 
+        private float CalculateGValue(Node parent, int operationIndex, char mode)
+        {
+            return mode == '2' && operationIndex > 3 ? parent.G + 2 : parent.G + 1;
+        }
 
-        public bool simulate()
+        public bool simulate(char Hmode, char Gmode, bool diagonal)
         {
             hashSetComparer nc = new hashSetComparer();
             openList = new List<Node>();
             closedList = new HashSet<Node>(nc);
             Node currentNode;
 
-            openList.Add(new Node(null, initialPosition[0], initialPosition[1], 0, CalculateManhattan(initialPosition[0], initialPosition[1])));
+            openList.Add(new Node(null, initialPosition[0], initialPosition[1], 0, CalculateHeuristic(initialPosition[0], initialPosition[1], Hmode)));
             initialNode = openList[0];
+
             int iterations = 0;
             while (openList.Count != 0 && iterations < 250)
             {
@@ -149,13 +165,15 @@ namespace IA_sim
                     return true;
                 }
 
+                int childX;
+                int childY;
                 //Generate children of current node
-                for (int i = 0; i < operations.Length; i++)
+                for (int i = 0; i < (diagonal ? operations.Length : 4); i++)
                 {
-                    int childX = currentNode.x + operations[i][0];
-                    int childY =currentNode.y + operations[i][1];
-                    float childG = currentNode.G + 1;
-                    Node childNode = new Node(currentNode, childX, childY, childG, CalculateManhattan(childX, childY));
+                    childX = currentNode.x + operations[i][0];
+                    childY = currentNode.y + operations[i][1];
+                    Node childNode = new Node(currentNode, childX, childY, CalculateGValue(currentNode, i, Gmode), CalculateHeuristic(childX, childY, Hmode));
+
                     //If the position is invalid, continue
                     if (CheckIfPositionIsValid(childNode, closedList))
                     {

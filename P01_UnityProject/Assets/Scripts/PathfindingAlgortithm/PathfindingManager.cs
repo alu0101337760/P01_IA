@@ -13,6 +13,10 @@ namespace IA_sim
 
         public Slider slider;
 
+        public bool diagonalMode = false;
+        public char heuristicMode = 'm';
+        public char costMode = '1';
+
         private Astar pathfinder;
         private List<GameObject> instancedMarks;
 
@@ -120,6 +124,7 @@ namespace IA_sim
 
         public void Simulate()
         {
+            
             if (CheckConditions())
             {
                 int maxX = PlacementManager.instance.maxX;
@@ -131,7 +136,7 @@ namespace IA_sim
                 forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
                 pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
-                if (pathfinder.simulate())
+                if (pathfinder.simulate(heuristicMode, costMode, diagonalMode))
                 {
                     Debug.Log("found a path");
                 }
