@@ -159,8 +159,8 @@ MonoBehaviour:
   finalLocation: {fileID: 4911879544242295325, guid: 4628b475517f86340b44060eac35f8bb, type: 3}
   locations: []
   obstacles: []
-  maxX: 10
-  maxZ: 10
+  maxX: 50
+  maxZ: 50
   obstaclePercentage: 0
 --- !u!4 &39363607
 Transform:
@@ -205,6 +205,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plane: {fileID: 7150458405857071795, guid: 7dedf3a310442a3448531f059a5c1866, type: 3}
   slider: {fileID: 1084219553}
+  diagonalMode: 1
+  diagonalsCosts2: 0
+  heuristicMode: 109
 --- !u!1 &324022078 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3954695932849734841, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
