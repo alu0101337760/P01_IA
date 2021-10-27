@@ -12,7 +12,7 @@ namespace IA_sim
             {                
                 gameObject.GetComponent<Slider>().onValueChanged.AddListener(delegate
                 {
-                    PathfindingManager.instance.DrawExploredNodes((int)gameObject.GetComponent<Slider>().value);
+                    PathfindingManager.instance.SetThreshold((int)gameObject.GetComponent<Slider>().value);
                 });
             }
             else

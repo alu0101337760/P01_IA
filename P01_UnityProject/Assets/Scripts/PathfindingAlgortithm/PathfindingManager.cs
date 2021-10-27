@@ -6,10 +6,13 @@ namespace IA_sim
 {
     public class PathfindingManager : MonoBehaviour
     {
+        public Mesh planeMesh;
+        public Material greenMat;
+        public Material yellowMat;
         public GameObject plane;
         public List<int[]> exploredPositions;
         public static PathfindingManager instance;
-        List<int[]> forbiddenPos;     
+        List<int[]> forbiddenPos;
 
         public Slider slider;
 
@@ -20,12 +23,16 @@ namespace IA_sim
         private Astar pathfinder;
         private List<GameObject> instancedMarks;
 
+        private int threshold = 0;
+
         private void Start()
         {
             if (instance == null)
             {
                 instance = this;
                 instancedMarks = new List<GameObject>();
+                greenMat.color = Color.cyan;
+                yellowMat.color = Color.yellow;
             }
         }
 
@@ -86,46 +93,46 @@ namespace IA_sim
             return instancedMarks.Exists(x => ToIntArr(x.transform.position).Equals(candidatePos)) || forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
         }
 
-        public void DrawExploredNodes(int threshold)
+        public void SetThreshold(int value)
         {
-            CleanGameObjectList(instancedMarks);
+            this.threshold = value;
+        }
+
+        public void DrawExploredNodes(int threshold)
+        {            
             int[][] operations = pathfinder.operations;
 
             //we draw the explored nodes
             if (exploredPositions.Count != 0)
-            {
+            {                
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    //instancedMarks.Add(Instantiate(plane));
-                    //instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i])+ new Vector3(0,0.05f,0);
-                    //instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
-                    //instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
-                    Camera.main.GetComponent<DrawQuadGL>().DrawGLQuads(exploredPositions.GetRange(0, threshold), Color.yellow);
-                }
-                //draw the candidates, applying the operators to all of the 
-                //explored nodes and making sure the positions are not occupied already
-                for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
-                {
+                    Graphics.DrawMesh(planeMesh, ToVector3(exploredPositions[i]) + new Vector3(0, 0.1f, 0), Quaternion.Euler(-90, 0, 0), yellowMat, 0);
                     for (int j = 0; j < operations.Length; j++)
                     {
                         int[] candidatePos = new int[2] { exploredPositions[i][0] + operations[j][0], exploredPositions[i][1] + operations[j][1] };
 
                         if (!CheckIfAlreadyRendered(candidatePos))
                         {
-                            //instancedMarks.Add(Instantiate(plane));
-                            //instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(candidatePos)+ new Vector3(0, 0.01f, 0);
-                            //instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
+                            Graphics.DrawMesh(planeMesh, ToVector3(candidatePos) + new Vector3(0, 0.05f, 0), Quaternion.Euler(-90, 0, 0), greenMat, 0);
                         }
 
                     }
                 }
             }
         }
+        private void Update()
+        {
+            if (this.threshold != 0 && exploredPositions.Count != 0)
+            {
 
+                DrawExploredNodes(this.threshold);
+            }
+        }
 
         public void Simulate()
         {
-            
+
             if (CheckConditions())
             {
                 int maxX = PlacementManager.instance.maxX;
