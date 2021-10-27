@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+
 namespace IA_sim
 {
     public class Astar
@@ -18,6 +19,7 @@ namespace IA_sim
         public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 },
                                       new int[2] { 1, 1 }, new int[2] { 1, -1 }, new int[2] { -1, 1 }, new int[2] { -1, -1 }};
 
+        public int iterations;
         private class hashSetComparer : IEqualityComparer<Node>
         {
             public bool Equals(Node x, Node y)
@@ -139,12 +141,12 @@ namespace IA_sim
             }
         }
 
-        private float CalculateGValue(Node parent, int operationIndex, bool diagonalCosts2)
+        private float CalculateGValue(Node parent, int operationIndex)
         {
-            return diagonalCosts2 && operationIndex > 3 ? parent.G + 2 : parent.G + 1;
+            return  parent.G + 1;
         }
 
-        public bool simulate(HeuristicMode Hmode, bool DiagonalCosts2, bool diagonal)
+        public bool simulate(HeuristicMode Hmode, bool diagonal)
         {
             hashSetComparer nc = new hashSetComparer();
             openList = new List<Node>();
@@ -154,8 +156,8 @@ namespace IA_sim
             openList.Add(new Node(null, initialPosition[0], initialPosition[1], 0, CalculateHeuristic(initialPosition[0], initialPosition[1], Hmode)));
             initialNode = openList[0];
 
-            int iterations = 0;
-            while (openList.Count != 0 && iterations < 250)
+            iterations = 0;
+            while (openList.Count != 0)
             {
                 iterations++;
                 //we add the node with the least F value to the closed node list
@@ -178,7 +180,7 @@ namespace IA_sim
                 {
                     childX = currentNode.x + operations[i][0];
                     childY = currentNode.y + operations[i][1];
-                    Node childNode = new Node(currentNode, childX, childY, CalculateGValue(currentNode, i, DiagonalCosts2), CalculateHeuristic(childX, childY, Hmode));
+                    Node childNode = new Node(currentNode, childX, childY, CalculateGValue(currentNode, i), CalculateHeuristic(childX, childY, Hmode));
 
                     //If the position is invalid, continue
                     if (CheckIfPositionIsValid(childNode, closedList))

@@ -7,18 +7,23 @@ namespace IA_sim
     public class PathfindingManager : MonoBehaviour
     {
         public GameObject plane;
-        public List<int[]> exploredPositions;
-        public static PathfindingManager instance;
-        List<int[]> forbiddenPos;     
-
         public Slider slider;
 
+        
+        List<int[]> forbiddenPos;
+        List<int[]> exploredPositions;
+        List<int[]> path;
+        private List<GameObject> instancedMarks;
+
+
+        public bool showPath = true;
+        public bool showExploredNodes = true;    
         public bool diagonalMode = false;
-        public bool diagonalsCosts2 = false;
         public Astar.HeuristicMode heuristicMode = Astar.HeuristicMode.Manhattan;
 
+
         private Astar pathfinder;
-        private List<GameObject> instancedMarks;
+        public static PathfindingManager instance;
 
         private void Start()
         {
@@ -29,26 +34,61 @@ namespace IA_sim
             }
         }
 
-        private void CleanGameObjectList(List<GameObject> list)
+        public void SetManhattan()
         {
-            for (int i = 0; i < list.Count; i++)
+            heuristicMode = Astar.HeuristicMode.Manhattan;
+        }
+
+        public void SetEuclid()
+        {
+            heuristicMode = Astar.HeuristicMode.Euclid;
+        }
+
+        public void SetDiagonalMovement(bool value)
+        {
+            diagonalMode = value;
+        }
+          
+        public void SetShowPath(bool value) {
+            showPath = value;
+        }
+
+        public void SetShowExploredNodes(bool value)
+        {
+            showExploredNodes = value;
+            if (!showExploredNodes)
             {
-                GameObject target = list[i];
+                DeactivateInstancedMarks(0);
+            }
+        }           
+        private void ClearInstancedMarks()
+        {
+            for (int i = 0; i< instancedMarks.Count;i++)
+            {
+                GameObject target = instancedMarks[i];
                 Destroy(target);
+            }
+            instancedMarks.Clear();
+        }
+
+        private void DeactivateInstancedMarks(int min)
+        {
+            for (int i = min; i < instancedMarks.Count; i++)
+            {
+                instancedMarks[i].SetActive(false);           
 
             }
-            list.Clear();
         }
 
         private Vector3 ToVector3(int[] pos)
         {
             return new Vector3(pos[0], 0, pos[1]);
         }
+
         private int[] ToIntArr(Vector3 pos)
         {
             return new int[2] { (int)pos.x, (int)pos.z };
         }
-
 
         private List<int[]> TranslateForbiddenPositions(Vector3[] forbiddenPositions)
         {
@@ -60,7 +100,6 @@ namespace IA_sim
             return output;
         }
 
-
         private bool CheckConditions()
         {
             return
@@ -69,54 +108,37 @@ namespace IA_sim
                 PlacementManager.instance.locations[0] != null &&
                 PlacementManager.instance.locations[1] != null;
         }
+             
 
-        private bool CheckIfAlreadyRendered(int[] candidatePos)
+        private void InstantiateExploredNodes()
         {
-            //bool output = false;
-
-            //for (int i = instancedMarks.Count - 1; i >= 0; i--)
-            //{
-            //    if ((int)instancedMarks[i].transform.position.x == candidatePos[0] && (int)instancedMarks[i].transform.position.z == candidatePos[1])
-            //    {
-            //        output = true;
-            //        break;
-            //    }
-            //}
-
-            return instancedMarks.Exists(x => ToIntArr(x.transform.position).Equals(candidatePos)) || forbiddenPos.Exists(x => x[0] == candidatePos[0] && x[1] == candidatePos[1]);
+            ClearInstancedMarks();
+            for(int i = 0; i < exploredPositions.Count; i++)
+            {
+                instancedMarks.Add(Instantiate(plane));
+                instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i]) + new Vector3(0, 0.05f, 0);
+                instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
+                if (path.Exists(x=> x[0] == exploredPositions[i][0] && x[1] == exploredPositions[i][1]))
+                {
+                    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
+                }
+                else
+                {
+                    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                }
+                instancedMarks[instancedMarks.Count - 1].SetActive(false);
+            }
         }
 
         public void DrawExploredNodes(int threshold)
         {
-            CleanGameObjectList(instancedMarks);
-            int[][] operations = pathfinder.operations;
-
-            //we draw the explored nodes
-            if (exploredPositions.Count != 0)
+            DeactivateInstancedMarks(threshold +1);           
+            
+            if (exploredPositions.Count != 0 && showExploredNodes)
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    instancedMarks.Add(Instantiate(plane));
-                    instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i])+ new Vector3(0,0.05f,0);
-                    instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
-                    instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.yellow;
-                }
-                //draw the candidates, applying the operators to all of the 
-                //explored nodes and making sure the positions are not occupied already
-                for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
-                {
-                    for (int j = 0; j < operations.Length; j++)
-                    {
-                        int[] candidatePos = new int[2] { exploredPositions[i][0] + operations[j][0], exploredPositions[i][1] + operations[j][1] };
-
-                        if (!CheckIfAlreadyRendered(candidatePos))
-                        {
-                            instancedMarks.Add(Instantiate(plane));
-                            instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(candidatePos)+ new Vector3(0, 0.01f, 0);
-                            instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
-                        }
-
-                    }
+                    instancedMarks[i].SetActive(true);             
                 }
             }
         }
@@ -124,7 +146,7 @@ namespace IA_sim
 
         public void Simulate()
         {
-            
+
             if (CheckConditions())
             {
                 int maxX = PlacementManager.instance.maxX;
@@ -136,7 +158,7 @@ namespace IA_sim
                 forbiddenPos = TranslateForbiddenPositions(obstaclePositions);
 
                 pathfinder = new Astar(maxX, maxZ, initial, final, forbiddenPos);
-                if (pathfinder.simulate(heuristicMode, diagonalsCosts2, diagonalMode))
+                if (pathfinder.simulate(heuristicMode, diagonalMode))
                 {
                     Debug.Log("found a path");
                 }
@@ -146,6 +168,9 @@ namespace IA_sim
                 }
                 this.exploredPositions = pathfinder.GetExploredPositions();
                 slider.gameObject.GetComponent<SliderScript>().SetMaxValue(this.exploredPositions.Count);
+                path = pathfinder.BacktrackSolution();
+                InstantiateExploredNodes();
+
 
             }
         }
