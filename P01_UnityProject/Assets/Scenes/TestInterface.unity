@@ -340,8 +340,7 @@ MonoBehaviour:
   plane: {fileID: 2912653881878467667, guid: 63b86d6ef2df9cc4fb92e40e7b216fb1, type: 3}
   slider: {fileID: 2107196366}
   showPath: 1
-  showExploredNodes: 0
-  showNodesToExplore: 0
+  showExploredNodes: 1
   diagonalMode: 0
   heuristicMode: 0
 --- !u!1 &49659333
@@ -673,7 +672,6 @@ MonoBehaviour:
   diagonalMode: 0
   showPath: 1
   showExplored: 0
-  showToExplore: 0
 --- !u!1 &400918906
 GameObject:
   m_ObjectHideFlags: 0
@@ -3236,7 +3234,6 @@ MonoBehaviour:
   diagonalMode: 0
   showPath: 0
   showExplored: 1
-  showToExplore: 0
 --- !u!1 &1952972757
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,7 +3388,6 @@ MonoBehaviour:
   diagonalMode: 1
   showPath: 0
   showExplored: 0
-  showToExplore: 0
 --- !u!1 &2107196363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7207125035167554335, guid: 5d7ea268715fbf7449df8a3986294214, type: 3}
