@@ -8,7 +8,6 @@ namespace IA_sim
         public float panBorderThickness = 10f;
         public float scrollSpeed = 40f;
         public float minY = 10f;
-        public float maxY = 120f;
 
         void Update()
         {
@@ -32,11 +31,11 @@ namespace IA_sim
             }
 
             float scroll = Input.GetAxis("Mouse ScrollWheel");
-            pos.y -= scroll * scrollSpeed * 100 * Time.deltaTime;
+            pos.y -= scroll * scrollSpeed * 300 * Time.deltaTime;
 
-            pos.x = Mathf.Clamp(pos.x, -PlacementManager.instance.maxX - 5, PlacementManager.instance.maxX + 5);
+            pos.x = Mathf.Clamp(pos.x, -5, PlacementManager.instance.maxX + 5);
             pos.y = Mathf.Clamp(pos.y, minY, float.MaxValue);
-            pos.z = Mathf.Clamp(pos.z, -PlacementManager.instance.maxZ - 5, PlacementManager.instance.maxZ + 5);
+            pos.z = Mathf.Clamp(pos.z, -5, PlacementManager.instance.maxZ + 5);
 
             transform.position = pos;
         }
