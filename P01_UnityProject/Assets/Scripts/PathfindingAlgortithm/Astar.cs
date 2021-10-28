@@ -132,7 +132,7 @@ namespace IA_sim
 
                 //euclid
                 case HeuristicMode.Euclid:
-                    return (float)Math.Sqrt(Math.Pow(x - target[0], 2));
+                    return (float)Math.Sqrt(Math.Pow(x - target[0], 2)+ Math.Pow(y - target[1], 2));
 
                 //manhattan by default
                 default:
