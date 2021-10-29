@@ -11,7 +11,6 @@ namespace IA_sim
         public TextScript nOfNodesInPath;
         public TextScript nOfNodes;
 
-
         List<int[]> forbiddenPos;
         List<int[]> exploredPositions;
         List<int[]> path;
@@ -23,6 +22,7 @@ namespace IA_sim
 
 
         private Astar pathfinder;
+        public long ElapsedMillisecond;
         public static PathfindingManager instance;
 
         private void Start()
@@ -167,6 +167,7 @@ namespace IA_sim
                 this.exploredPositions = pathfinder.GetExploredPositions();
                 slider.gameObject.GetComponent<SliderScript>().SetMaxValue(this.exploredPositions.Count);
 
+                ElapsedMillisecond = pathfinder.GetElapsedMiliseconds();
                 path = pathfinder.BacktrackSolution();
                 nOfNodesInPath.UpdateText(path.Count);
                 InstantiateExploredNodes();

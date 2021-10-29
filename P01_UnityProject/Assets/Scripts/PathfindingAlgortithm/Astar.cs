@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System;
 
 namespace IA_sim
@@ -19,6 +20,7 @@ namespace IA_sim
         public int[][] operations = { new int[2] { 1, 0 }, new int[2] { -1, 0 }, new int[2] { 0, 1 }, new int[2] { 0, -1 },
                                       new int[2] { 1, 1 }, new int[2] { 1, -1 }, new int[2] { -1, 1 }, new int[2] { -1, -1 }};
 
+        public Stopwatch stopwatch;
         public int iterations;
         private class hashSetComparer : IEqualityComparer<Node>
         {
@@ -65,6 +67,7 @@ namespace IA_sim
             initialPosition = initial;
             target = last;
             this.forbiddenPositions = forbiddenPositions;
+            stopwatch = new Stopwatch();
         }
 
         private void OrderedInsert(List<Node> nodeList, Node node)
@@ -157,6 +160,8 @@ namespace IA_sim
             initialNode = openList[0];
 
             iterations = 0;
+
+            stopwatch.Start();
             while (openList.Count != 0)
             {
                 iterations++;
@@ -169,7 +174,7 @@ namespace IA_sim
                 {
                     ///// FOUND A SOLUTION /////
                     finalNode = currentNode;
-
+                    stopwatch.Stop();
                     return true;
                 }
 
@@ -190,8 +195,14 @@ namespace IA_sim
 
                 }
             }
-
+            stopwatch.Stop();
+            
             return false;
+        }
+
+        public long GetElapsedMiliseconds()
+        {
+            return stopwatch.ElapsedMilliseconds;
         }
 
         public List<int[]> DebugGetOpenPositions()
