@@ -219,11 +219,15 @@ namespace IA_sim
         public List<int[]> BacktrackSolution()
         {
             List<int[]> output = new List<int[]>();
-            Node currentNode = finalNode;
-            while (currentNode.parent != null)
+
+            if (finalNode != null)
             {
-                output.Add(new int[2] { currentNode.x, currentNode.y });
-                currentNode = currentNode.parent;
+                Node currentNode = finalNode;
+                while (currentNode.parent != null)
+                {
+                    output.Add(new int[2] { currentNode.x, currentNode.y });
+                    currentNode = currentNode.parent;
+                }
             }
             return output;
         }

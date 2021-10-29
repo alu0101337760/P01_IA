@@ -8,6 +8,8 @@ namespace IA_sim
     {
         public GameObject plane;
         public Slider slider;
+        public TextScript nOfNodesInPath;
+        public TextScript nOfNodes;
 
         
         List<int[]> forbiddenPos;
@@ -132,8 +134,8 @@ namespace IA_sim
 
         public void DrawExploredNodes(int threshold)
         {
-            DeactivateInstancedMarks(threshold +1);           
-            
+            DeactivateInstancedMarks(threshold +1);
+            nOfNodes.UpdateText(threshold);
             if (exploredPositions.Count != 0 && showExploredNodes)
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
@@ -168,7 +170,9 @@ namespace IA_sim
                 }
                 this.exploredPositions = pathfinder.GetExploredPositions();
                 slider.gameObject.GetComponent<SliderScript>().SetMaxValue(this.exploredPositions.Count);
+                 
                 path = pathfinder.BacktrackSolution();
+                nOfNodesInPath.UpdateText(path.Count);
                 InstantiateExploredNodes();
 
 

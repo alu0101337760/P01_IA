@@ -341,7 +341,7 @@ MonoBehaviour:
   slider: {fileID: 2107196366}
   showPath: 1
   showExploredNodes: 1
-  diagonalMode: 0
+  diagonalMode: 1
   heuristicMode: 0
 --- !u!1 &49659333
 GameObject:
