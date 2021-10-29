@@ -9,11 +9,7 @@ namespace IA_sim
         public List<GameObject> walls;
 
         public float wallsHeight;
-
-        void Start()
-        {
-
-        }
+            
 
         private void CalculateWallsSize()
         {
@@ -47,18 +43,25 @@ namespace IA_sim
             gameObject.transform.position = new Vector3(((x / 2f)), gameObject.transform.position.y, ((z / 2f)));
         }
 
+        public void ResetGround() {
+            gameObject.transform.position = new Vector3(0, 0, 0);
+            gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        void Update()
-        {
-            if (PlacementManager.instance != null)
-            {
-                if (PlacementManager.instance.maxX != 0 && PlacementManager.instance.maxZ != 0)
-                {
-                    CalculateGroundPlacement();
-                    CalculateWallsSize();
-                    Destroy(this);
-                }
-            }
+            walls[0].transform.position = new Vector3(1,0,0);
+            walls[0].transform.localScale = new Vector3(1, 1, 1);
+            walls[1].transform.position = new Vector3(-1,0,0);
+            walls[1].transform.localScale = new Vector3(1, 1, 1);
+            walls[2].transform.position = new Vector3(0,0,1);
+            walls[2].transform.localScale = new Vector3(1, 1, 1);
+            walls[3].transform.position = new Vector3(0,0,-1);
+            walls[3].transform.localScale = new Vector3(1, 1, 1);
         }
+        
+        public void CalculateTerrain()
+        {
+            CalculateGroundPlacement();
+            CalculateWallsSize();
+        }
+
     }
 }

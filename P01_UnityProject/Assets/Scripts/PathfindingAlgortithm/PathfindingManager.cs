@@ -11,15 +11,13 @@ namespace IA_sim
         public TextScript nOfNodesInPath;
         public TextScript nOfNodes;
 
-        
+
         List<int[]> forbiddenPos;
         List<int[]> exploredPositions;
         List<int[]> path;
         private List<GameObject> instancedMarks;
 
 
-        public bool showPath = true;
-        public bool showExploredNodes = true;    
         public bool diagonalMode = false;
         public Astar.HeuristicMode heuristicMode = Astar.HeuristicMode.Manhattan;
 
@@ -36,6 +34,16 @@ namespace IA_sim
             }
         }
 
+        public void ResetManager()
+        {
+            ClearInstancedMarks();
+            forbiddenPos.Clear();
+            path.Clear();
+            nOfNodesInPath.UpdateText(0);
+            exploredPositions.Clear();
+            nOfNodes.UpdateText(0);
+        }
+
         public void SetManhattan()
         {
             heuristicMode = Astar.HeuristicMode.Manhattan;
@@ -50,22 +58,10 @@ namespace IA_sim
         {
             diagonalMode = value;
         }
-          
-        public void SetShowPath(bool value) {
-            showPath = value;
-        }
 
-        public void SetShowExploredNodes(bool value)
-        {
-            showExploredNodes = value;
-            if (!showExploredNodes)
-            {
-                DeactivateInstancedMarks(0);
-            }
-        }           
         private void ClearInstancedMarks()
         {
-            for (int i = 0; i< instancedMarks.Count;i++)
+            for (int i = 0; i < instancedMarks.Count; i++)
             {
                 GameObject target = instancedMarks[i];
                 Destroy(target);
@@ -77,7 +73,7 @@ namespace IA_sim
         {
             for (int i = min; i < instancedMarks.Count; i++)
             {
-                instancedMarks[i].SetActive(false);           
+                instancedMarks[i].SetActive(false);
 
             }
         }
@@ -110,17 +106,17 @@ namespace IA_sim
                 PlacementManager.instance.locations[0] != null &&
                 PlacementManager.instance.locations[1] != null;
         }
-             
+
 
         private void InstantiateExploredNodes()
         {
             ClearInstancedMarks();
-            for(int i = 0; i < exploredPositions.Count; i++)
+            for (int i = 0; i < exploredPositions.Count; i++)
             {
                 instancedMarks.Add(Instantiate(plane));
                 instancedMarks[instancedMarks.Count - 1].transform.position = ToVector3(exploredPositions[i]) + new Vector3(0, 0.05f, 0);
                 instancedMarks[instancedMarks.Count - 1].transform.parent = this.transform;
-                if (path.Exists(x=> x[0] == exploredPositions[i][0] && x[1] == exploredPositions[i][1]))
+                if (path.Exists(x => x[0] == exploredPositions[i][0] && x[1] == exploredPositions[i][1]))
                 {
                     instancedMarks[instancedMarks.Count - 1].GetComponent<MeshRenderer>().material.color = Color.green;
                 }
@@ -134,13 +130,13 @@ namespace IA_sim
 
         public void DrawExploredNodes(int threshold)
         {
-            DeactivateInstancedMarks(threshold +1);
+            DeactivateInstancedMarks(threshold + 1);
             nOfNodes.UpdateText(threshold);
-            if (exploredPositions.Count != 0 && showExploredNodes)
+            if (exploredPositions.Count != 0)
             {
                 for (int i = 0; i < Math.Min(exploredPositions.Count, threshold); i++)
                 {
-                    instancedMarks[i].SetActive(true);             
+                    instancedMarks[i].SetActive(true);
                 }
             }
         }
@@ -170,7 +166,7 @@ namespace IA_sim
                 }
                 this.exploredPositions = pathfinder.GetExploredPositions();
                 slider.gameObject.GetComponent<SliderScript>().SetMaxValue(this.exploredPositions.Count);
-                 
+
                 path = pathfinder.BacktrackSolution();
                 nOfNodesInPath.UpdateText(path.Count);
                 InstantiateExploredNodes();

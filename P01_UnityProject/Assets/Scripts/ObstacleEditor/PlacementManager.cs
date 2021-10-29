@@ -9,6 +9,8 @@ namespace IA_sim
         public GameObject obstacle;
         public GameObject taxi;
         public GameObject finalLocation;
+        public GroundPlacement groundPlacement;
+
 
         public GameObject[] locations;
         public List<GameObject> obstacles;
@@ -27,6 +29,22 @@ namespace IA_sim
                 build();
             }
             RandomSpawn();
+        }
+
+        public void ResetManager()
+        {
+            maxX = 1;
+            maxZ = 1;
+            obstaclePercentage = 0;
+            DestroyAllObstacles();
+            Destroy(locations[0]);
+            Destroy(locations[1]);
+            locations[0] = null;
+            locations[1] = null;
+
+            groundPlacement.ResetGround();
+            maxX = 0;
+            maxZ = 0;
         }
 
         private void build()
@@ -48,6 +66,10 @@ namespace IA_sim
             if (maxX == 0)
             {
                 maxX = int.Parse(str);
+                if (maxZ != 0)
+                {
+                    groundPlacement.CalculateTerrain();
+                }
             }
         }
         public void SetMaxZ(string str)
@@ -56,6 +78,10 @@ namespace IA_sim
             if (maxZ == 0)
             {
                 maxZ = int.Parse(str);
+                if (maxX != 0)
+                {
+                    groundPlacement.CalculateTerrain();
+                }
             }
         }
 
