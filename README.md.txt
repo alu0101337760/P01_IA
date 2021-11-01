@@ -3,8 +3,10 @@
 	A* pathfinding visualizer
 #############################################
 
+#Github repository: https://github.com/alu0101337760/P01_IA.git
+
 #Description of the files:
-	+The unity project folder is P01_UnityProjecs.
+	+The unity project folder is P01_UnityProjects.
 
 	+The Build folder contains the built project, ready to be executed.
 
